@@ -135,4 +135,18 @@ public class TripleListTest {
             assertEquals(values[i++], it.next());
         }
     }
+
+    @Test
+    public void testIfNoCycle() {
+        /** Initialization of the TripleList **/
+        final int NUMBER_OF_ELEMENTS = 100;
+        TripleList<Integer> tripleList = new TripleList<>();
+        for (int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
+            tripleList.add(i);
+        }
+        /** Created 2 TripleLists, first jumps every single element,
+         another every two elements, in out case every two elements means every NextElement**/
+        TripleList<Integer> tripleListEverySingleNode = tripleList;
+        TripleList<Integer> tripleListEveryTwoNodes = tripleList.getNextElement();
+    }
 }

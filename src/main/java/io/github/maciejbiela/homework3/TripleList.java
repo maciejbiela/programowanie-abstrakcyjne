@@ -5,7 +5,6 @@ import java.util.Iterator;
 public class TripleList<T> implements Iterable<T> {
     private TripleListNode<T> firstNode;
     private TripleListNode<T> lastNode;
-
     private int size;
 
     public TripleList() {
@@ -13,29 +12,54 @@ public class TripleList<T> implements Iterable<T> {
         firstNode = lastNode = null;
     }
 
+    public TripleList(TripleListNode<T> firstNode, TripleListNode<T> lastNode, int size) {
+        this.firstNode = firstNode;
+        this.lastNode = lastNode;
+        this.size = size;
+    }
+
     public T getValue() {
         return firstNode.getValue();
     }
 
-    public TripleListNode<T> getPreviousElement() {
-        if (firstNode != null) {
-            return firstNode.getPreviousElement();
-        }
-        return null;
+    public TripleList<T> getPreviousElement() {
+        Explorer explorer = new Explorer();
+        TripleListNode<T> nextNode = explorer.getPreviousElement();
+        return getQueriedTripleList(nextNode);
     }
 
-    public TripleListNode<T> getMiddleElement() {
-        if (firstNode != null) {
-            return firstNode.getMiddleElement();
-        }
-        return null;
+    public TripleList<T> getMiddleElement() {
+        Explorer explorer = new Explorer();
+        TripleListNode<T> nextNode = explorer.getMiddleElement();
+        return getQueriedTripleList(nextNode);
     }
 
-    public TripleListNode<T> getNextElement() {
-        if (firstNode != null) {
-            return firstNode.getNextElement();
+    public TripleList<T> getNextElement() {
+        Explorer explorer = new Explorer();
+        TripleListNode<T> nextNode = explorer.getNextElement();
+        return getQueriedTripleList(nextNode);
+    }
+
+    private TripleList<T> getQueriedTripleList(TripleListNode<T> nextNode) {
+        if (nextNode == null) {
+            return null;
+        } else {
+            return new TripleList<>(nextNode, lastNode, size);
         }
-        return null;
+    }
+
+    private class Explorer {
+        public TripleListNode<T> getPreviousElement() {
+            return firstNode != null ? firstNode.getPreviousElement() : null;
+        }
+
+        public TripleListNode<T> getMiddleElement() {
+            return firstNode != null ? firstNode.getMiddleElement() : null;
+        }
+
+        public TripleListNode<T> getNextElement() {
+            return firstNode != null ? firstNode.getNextElement() : null;
+        }
     }
 
     public int size() {
@@ -94,3 +118,5 @@ public class TripleList<T> implements Iterable<T> {
         }
     }
 }
+
+
