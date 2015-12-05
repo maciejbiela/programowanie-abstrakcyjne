@@ -1,12 +1,14 @@
 package io.github.maciejbiela.homework3;
 
+import com.google.common.collect.ObjectArrays;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class TripleListTest {
     @Test
@@ -148,5 +150,57 @@ public class TripleListTest {
          another every two elements, in out case every two elements means every NextElement**/
         TripleList<Integer> tripleListEverySingleNode = tripleList;
         TripleList<Integer> tripleListEveryTwoNodes = tripleList.getNextElement();
+        for (int i = 0; i < NUMBER_OF_ELEMENTS * NUMBER_OF_ELEMENTS; i++) {
+            assertNotSame(tripleListEverySingleNode, tripleListEveryTwoNodes);
+            tripleListEveryTwoNodes = jumpToNextElement(tripleListEveryTwoNodes);
+            if (null == tripleListEveryTwoNodes) {
+                // if list has end means there are no cycles
+                break;
+            } else {
+                tripleListEveryTwoNodes = tripleListEveryTwoNodes.getNextElement();
+            }
+        }
+    }
+
+    @Test
+    public void arrayInitializers() {
+        TripleList<Integer> tl1 = new TripleList<>(new Integer[]{5, 10, 15});
+        assertEquals(3, tl1.size());
+        // Guava library used here to concat those arrays
+        TripleList<Integer> tl2 = new TripleList<>(ObjectArrays.concat(ObjectArrays.concat(0, tl1.toArray(new Integer[tl1.size()])), 20));
+        assertEquals(3, tl1.size());
+        assertEquals(5, tl2.size());
+        assertEquals(tl1.getValue(), tl2.getMiddleElement().getValue());
+        List<Integer> tl1Sorted = tl1.toList();
+        tl1Sorted.sort((o1, o2) -> o1 - o2);
+        List<Integer> tl2Sorted = tl2.toList();
+        tl2Sorted.sort((o1, o2) -> o1 - o2);
+        // Not really understood the Enumerable.SequenceEqual step,
+        // as it does not assert anything, whatsoever.
+    }
+
+    private TripleList<Integer> jumpToNextElement(TripleList<Integer> element) {
+        if (element != null) {
+            if (isNotLastElement(element)) {
+                if (isMiddleElement(element)) {
+                    if (null != element.getMiddleElement().getNextElement()) {
+                        return element.getMiddleElement().getNextElement();
+                    }
+                } else {
+                    if (null != element.getNextElement()) {
+                        return element.getNextElement();
+                    }
+                }
+            }
+        }
+        return element;
+    }
+
+    private boolean isNotLastElement(TripleList<Integer> element) {
+        return null != element.getMiddleElement();
+    }
+
+    private boolean isMiddleElement(TripleList<Integer> element) {
+        return null == element.getNextElement() && null == element.getPreviousElement() && null != element.getMiddleElement();
     }
 }

@@ -1,6 +1,9 @@
 package io.github.maciejbiela.homework3;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 public class TripleList<T> implements Iterable<T> {
     private TripleListNode<T> firstNode;
@@ -16,6 +19,12 @@ public class TripleList<T> implements Iterable<T> {
         this.firstNode = firstNode;
         this.lastNode = lastNode;
         this.size = size;
+    }
+
+    public TripleList(T[] values) {
+        for (T value : values) {
+            this.add(value);
+        }
     }
 
     public T getValue() {
@@ -102,7 +111,7 @@ public class TripleList<T> implements Iterable<T> {
 
         @Override
         public boolean hasNext() {
-            return currentNode != null && currentNode != lastNode;
+            return currentNode != null;
         }
 
         @Override
@@ -116,6 +125,18 @@ public class TripleList<T> implements Iterable<T> {
             isUp = !isUp;
             return next;
         }
+    }
+
+    public List<T> toList() {
+        List<T> list = new ArrayList<>();
+        for (T value : this) {
+            list.add(value);
+        }
+        return list;
+    }
+
+    public T[] toArray(T[] array) {
+        return toList().toArray(array);
     }
 }
 
