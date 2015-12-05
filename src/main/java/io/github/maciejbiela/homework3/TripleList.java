@@ -1,7 +1,6 @@
 package io.github.maciejbiela.homework3;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -57,42 +56,56 @@ public class TripleList<T> implements Iterable<T> {
         }
     }
 
-    private class Explorer {
-        public TripleListNode<T> getPreviousElement() {
-            return firstNode != null ? firstNode.getPreviousElement() : null;
-        }
-
-        public TripleListNode<T> getMiddleElement() {
-            return firstNode != null ? firstNode.getMiddleElement() : null;
-        }
-
-        public TripleListNode<T> getNextElement() {
-            return firstNode != null ? firstNode.getNextElement() : null;
-        }
-    }
-
     public int size() {
         return size;
     }
 
     public void add(T value) {
-        if (lastNode == null) {
-            firstNode = lastNode = new TripleListNode<>(value);
-        } else if (firstNode == lastNode) {
-            TripleListNode<T> newNode = new TripleListNode<>(value, null, firstNode, null);
-            firstNode.setMiddleElement(newNode);
-            lastNode = newNode;
-        } else if (lastNode.getMiddleElement() == null) {
-            TripleListNode<T> newNode = new TripleListNode<>(value, null, lastNode, null);
-            lastNode.setMiddleElement(newNode);
-            lastNode = newNode;
+        if (isAddingFirstElement()) {
+            addFirstElement(value);
+        } else if (isAddingSecondElement()) {
+            addSecondElement(value);
+        } else if (isAddingUpperRowElement()) {
+            addUpperRowElement(value);
         } else {
-            TripleListNode<T> upperNode = lastNode.getMiddleElement();
-            TripleListNode<T> newNode = new TripleListNode<>(value, upperNode, null, null);
-            upperNode.setNextElement(newNode);
-            lastNode = newNode;
+            addLowerRowElement(value);
         }
         size++;
+    }
+
+    private void addLowerRowElement(T value) {
+        TripleListNode<T> upperNode = lastNode.getMiddleElement();
+        TripleListNode<T> newNode = new TripleListNode<>(value, upperNode, null, null);
+        upperNode.setNextElement(newNode);
+        lastNode = newNode;
+    }
+
+    private void addUpperRowElement(T value) {
+        TripleListNode<T> newNode = new TripleListNode<>(value, null, lastNode, null);
+        lastNode.setMiddleElement(newNode);
+        lastNode = newNode;
+    }
+
+    private boolean isAddingUpperRowElement() {
+        return lastNode.getMiddleElement() == null;
+    }
+
+    private void addSecondElement(T value) {
+        TripleListNode<T> newNode = new TripleListNode<>(value, null, firstNode, null);
+        firstNode.setMiddleElement(newNode);
+        lastNode = newNode;
+    }
+
+    private boolean isAddingSecondElement() {
+        return firstNode == lastNode;
+    }
+
+    private void addFirstElement(T value) {
+        firstNode = lastNode = new TripleListNode<>(value);
+    }
+
+    private boolean isAddingFirstElement() {
+        return lastNode == null;
     }
 
     @Override
@@ -101,9 +114,9 @@ public class TripleList<T> implements Iterable<T> {
     }
 
     private class TripleListIterator implements Iterator<T> {
+
         private TripleListNode<T> currentNode;
         private boolean isUp;
-
         public TripleListIterator() {
             currentNode = firstNode;
             isUp = true;
@@ -125,8 +138,8 @@ public class TripleList<T> implements Iterable<T> {
             isUp = !isUp;
             return next;
         }
-    }
 
+    }
     public List<T> toList() {
         List<T> list = new ArrayList<>();
         for (T value : this) {
@@ -137,6 +150,24 @@ public class TripleList<T> implements Iterable<T> {
 
     public T[] toArray(T[] array) {
         return toList().toArray(array);
+    }
+
+    private class Explorer {
+        public TripleListNode<T> getPreviousElement() {
+            return isStillAValidNode() ? firstNode.getPreviousElement() : null;
+        }
+
+        public TripleListNode<T> getMiddleElement() {
+            return isStillAValidNode() ? firstNode.getMiddleElement() : null;
+        }
+
+        public TripleListNode<T> getNextElement() {
+            return isStillAValidNode() ? firstNode.getNextElement() : null;
+        }
+
+        private boolean isStillAValidNode() {
+            return firstNode != null;
+        }
     }
 }
 
