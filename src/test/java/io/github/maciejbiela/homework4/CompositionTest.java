@@ -73,25 +73,25 @@ public class CompositionTest {
         assertEquals(0, (int) comp.execute(0));
         assertEquals(2, (int) comp.execute(2));
 
-        Executable<Integer> linearfunction = (Integer x) -> x + 2;
+        Executable<Integer> linearFunction = (Integer x) -> x + 2;
 
-        comp.add(linearfunction);
+        comp.add(linearFunction);
         assertEquals(2, (int) comp.execute(0));
         assertEquals(4, (int) comp.execute(2));
 
-        Executable<Integer> cubicfunction = (Integer x) -> x * x * x;
+        Executable<Integer> cubicFunction = (Integer x) -> x * x * x;
 
-        comp.add(cubicfunction);
+        comp.add(cubicFunction);
         assertEquals(8, (int) comp.execute(0));
         assertEquals(64, (int) comp.execute(2));
     }
 
     @Test
     public void compositionOfCompositions() {
-        Executable<Integer> linearfunction = (Integer x) -> x + 2;
-        Executable<Integer> quadraticfunction = (Integer x) -> 2 * x * x;
-        Composition<Integer> comp1 = new Composition<>(linearfunction, quadraticfunction);
-        Composition<Integer> comp2 = new Composition<>(quadraticfunction, linearfunction);
+        Executable<Integer> linearFunction = (Integer x) -> x + 2;
+        Executable<Integer> quadraticFunction = (Integer x) -> 2 * x * x;
+        Composition<Integer> comp1 = new Composition<>(linearFunction, quadraticFunction);
+        Composition<Integer> comp2 = new Composition<>(quadraticFunction, linearFunction);
         Composition<Integer> compOfComps = new Composition<>(comp1, comp2);
         assertEquals(130, (int) compOfComps.execute(0));
         assertEquals(650, (int) compOfComps.execute(1));
@@ -101,15 +101,15 @@ public class CompositionTest {
     @Test
     public void checkIterator() {
         Executable<Integer> identity = (Integer x) -> x;
-        Executable<Integer> linearfunction = (Integer x) -> 3 * x - 2;
-        Executable<Integer> quadraticfunction = (Integer x) -> 2 * x * x - 5;
-        Executable<Integer> cubicfunction = (Integer x) -> x * x * x + x * x + x + 1;
+        Executable<Integer> linearFunction = (Integer x) -> 3 * x - 2;
+        Executable<Integer> quadraticFunction = (Integer x) -> 2 * x * x - 5;
+        Executable<Integer> cubicFunction = (Integer x) -> x * x * x + x * x + x + 1;
 
         ArrayList<Executable<Integer>> functions = new ArrayList<>();
         functions.add(identity);
-        functions.add(linearfunction);
-        functions.add(quadraticfunction);
-        functions.add(cubicfunction);
+        functions.add(linearFunction);
+        functions.add(quadraticFunction);
+        functions.add(cubicFunction);
         Composition<Integer> comp = new Composition<>(functions);
         int tab0[] = new int[]{0, -2, -5, 1};
         int tab1[] = new int[]{1, 1, -3, 4};
