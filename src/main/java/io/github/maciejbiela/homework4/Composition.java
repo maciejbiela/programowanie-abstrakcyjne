@@ -31,14 +31,10 @@ public class Composition<T> implements Executable<T>, Iterable<Executable<T>> {
         if (functions.size() == 0) {
             return null;
         }
-        return executeRecursively(argument, 0);
-    }
-
-    private T executeRecursively(T argument, int i) {
-        if (i == functions.size() - 1) {
-            return functions.get(i).execute(argument);
-        } else {
-            return executeRecursively(functions.get(i).execute(argument), i + 1);
+        T result =  argument;
+        for (Executable<T> function : functions) {
+            result = function.execute(result);
         }
+        return result;
     }
 }
