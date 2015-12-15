@@ -47,4 +47,54 @@ public class SingleComponentTester {
         verify(mock, times(1)).log(eq(LoggingType.WARNING), anyString());
         verify(mock, times(3)).log(eq(LoggingType.INFO), anyString());
     }
+
+    @Test
+    public void testProductionLineMover() {
+        ProductionLineMover mock = mock(ProductionLineMover.class);
+
+        mock.moveProductionLine(MovingDirection.FORWARD);
+        mock.moveProductionLine(MovingDirection.TO_SCRAN);
+        mock.moveProductionLine(MovingDirection.FORWARD);
+        mock.moveProductionLine(MovingDirection.FORWARD);
+
+        verify(mock, times(3)).moveProductionLine(MovingDirection.FORWARD);
+        verify(mock, times(1)).moveProductionLine(MovingDirection.TO_SCRAN);
+        verify(mock, never()).moveProductionLine(MovingDirection.BACK);
+    }
+
+
+    @Test
+    public void testConstructionRecipe() {
+        ConstructionRecipe mock = mock(ConstructionRecipe.class);
+        final String nameOfObject = "Fiat 126P";
+
+        when(mock.getNameOfObject()).thenReturn(nameOfObject);
+
+        assertEquals(nameOfObject, mock.getNameOfObject());
+    }
+
+    @Test
+    public void testIConstructionRecipeCreator() {
+        ConstructionRecipe mock = mock(ConstructionRecipe.class);
+        final String nameOfObject = "Fiat 126P";
+        when(mock.getNameOfObject()).thenReturn(nameOfObject);
+
+        final int numberOfObjectsToProduce = 10;
+        ConstructionRecipeCreator mockCreator = mock(ConstructionRecipeCreator.class);
+        when(mockCreator.getConstructionRecipe()).thenReturn(mock);
+        when(mockCreator.getNumberOfElementsToProduce()).thenReturn(numberOfObjectsToProduce);
+
+        assertEquals(numberOfObjectsToProduce, mockCreator.getNumberOfElementsToProduce());
+        assertEquals(nameOfObject, mockCreator.getConstructionRecipe().getNameOfObject());
+    }
+
+    @Test
+    public void testObjectConstructor() {
+        ConstructionRecipe mock = mock(ConstructionRecipe.class);
+        ObjectsConstructor mockObjectConstructor = mock(ObjectsConstructor.class);
+        when(mockObjectConstructor.constructObjectFromRecipe(mock)).thenReturn(true);
+
+        assertEquals(true, mockObjectConstructor.constructObjectFromRecipe(mock));
+        verify(mockObjectConstructor, times(1)).constructObjectFromRecipe(mock);
+    }
 }
