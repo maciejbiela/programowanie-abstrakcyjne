@@ -33,9 +33,6 @@ public class SortedDeque<T extends Comparable> {
     }
 
     public int capacity() {
-        if (this.firstBucket == null) {
-            return 0;
-        }
         return this.numberOfBuckets * this.bucketSize;
     }
 
@@ -49,20 +46,8 @@ public class SortedDeque<T extends Comparable> {
     }
 
     public void insert(T valueToAdd) {
-        InsertReturnInformation<T> insertReturnInformation = this.firstBucket.insert(valueToAdd, null);
-        Optional<Bucket<T>> possiblyNewFirstBucket = insertReturnInformation.getPossiblyNewFirstBucket();
-        if (possiblyNewFirstBucket.isPresent()) {
-            this.firstBucket = possiblyNewFirstBucket.get();
-        }
-        if (insertReturnInformation.getIncrementTotalSize()) {
-            this.totalSize++;
-        }
-        if (insertReturnInformation.getIncrementUniqueSize()) {
-            this.uniqueSize++;
-        }
-        if (insertReturnInformation.getIncrementNumberOfBuckets()) {
-            this.numberOfBuckets++;
-        }
+        InsertReturnInformation<T> insertReturnInformation = this.firstBucket.insert(valueToAdd);
+        updateStatisticsGiven(insertReturnInformation);
     }
 
     public T get(int index) {
@@ -70,6 +55,38 @@ public class SortedDeque<T extends Comparable> {
     }
 
     public T back() {
-        return this.firstBucket.get(this.uniqueSize() - 1);
+        return this.firstBucket.get(this.uniqueSize - 1);
+    }
+
+    private void updateStatisticsGiven(InsertReturnInformation<T> insertReturnInformation) {
+        updateFirstBucket(insertReturnInformation);
+        updateTotalSize(insertReturnInformation);
+        updateUniqueSize(insertReturnInformation);
+        updateNumberOfBuckets(insertReturnInformation);
+    }
+
+    private void updateNumberOfBuckets(InsertReturnInformation<T> insertReturnInformation) {
+        if (insertReturnInformation.getIncrementNumberOfBuckets()) {
+            this.numberOfBuckets++;
+        }
+    }
+
+    private void updateUniqueSize(InsertReturnInformation<T> insertReturnInformation) {
+        if (insertReturnInformation.getIncrementUniqueSize()) {
+            this.uniqueSize++;
+        }
+    }
+
+    private void updateTotalSize(InsertReturnInformation<T> insertReturnInformation) {
+        if (insertReturnInformation.getIncrementTotalSize()) {
+            this.totalSize++;
+        }
+    }
+
+    private void updateFirstBucket(InsertReturnInformation<T> insertReturnInformation) {
+        Optional<Bucket<T>> possiblyNewFirstBucket = insertReturnInformation.getPossiblyNewFirstBucket();
+        if (possiblyNewFirstBucket.isPresent()) {
+            this.firstBucket = possiblyNewFirstBucket.get();
+        }
     }
 }

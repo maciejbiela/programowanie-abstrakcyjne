@@ -24,10 +24,12 @@ public class Bucket<T extends Comparable> {
         this.items = new ArrayList<>(bucketSize);
     }
 
-    public InsertReturnInformation<T> insert(T valueToAdd, InsertReturnInformation.Builder<T> builder) {
-        if (builder == null) {
-            builder = new InsertReturnInformation.Builder();
-        }
+    public InsertReturnInformation<T> insert(T valueToAdd) {
+        InsertReturnInformation.Builder builder = new InsertReturnInformation.Builder();
+        return insert(valueToAdd, builder);
+    }
+
+    private InsertReturnInformation<T> insert(T valueToAdd, InsertReturnInformation.Builder<T> builder) {
         Optional<Bucket<T>> possiblyNewFirstBucket = Optional.empty();
         if (shouldAppendNewBucketToTheLeft(valueToAdd)) {
            possiblyNewFirstBucket = Optional.of(appendNewBucketToTheLeftWithValue(valueToAdd, builder));
