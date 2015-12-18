@@ -21,24 +21,15 @@ public class SortedDeque<T extends Comparable> {
     }
 
     public boolean isEmpty() {
-        if (this.firstBucket == null) {
-            return true;
-        }
-        return this.firstBucket.isEmpty();
+        return this.totalSize == 0;
     }
 
     public int totalSize() {
-        if (this.firstBucket == null) {
-            return 0;
-        }
-        return this.firstBucket.getTotalSize();
+        return this.totalSize;
     }
 
     public int uniqueSize() {
-        if (this.firstBucket == null) {
-            return 0;
-        }
-        return this.firstBucket.getUniqueSize();
+        return this.uniqueSize;
     }
 
     public int capacity() {
@@ -60,10 +51,19 @@ public class SortedDeque<T extends Comparable> {
     }
 
     public void insert(T valueToAdd) {
-        InsertReturnInformation<T> insertReturnInformation = this.firstBucket.insert(valueToAdd);
+        InsertReturnInformation<T> insertReturnInformation = this.firstBucket.insert(valueToAdd, null);
         Optional<Bucket<T>> possiblyNewFirstBucket = insertReturnInformation.getPossiblyNewFirstBucket();
         if (possiblyNewFirstBucket.isPresent()) {
             this.firstBucket = possiblyNewFirstBucket.get();
+        }
+        if (insertReturnInformation.getIncrementTotalSize()) {
+            this.totalSize++;
+        }
+        if (insertReturnInformation.getIncrementUniqueSize()) {
+            this.uniqueSize++;
+        }
+        if (insertReturnInformation.getIncrementNumberOfBuckets()) {
+            this.numberOfBuckets++;
         }
     }
 
