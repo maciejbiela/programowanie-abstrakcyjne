@@ -60,7 +60,8 @@ public class SortedDeque<T extends Comparable> {
     }
 
     public void insert(T valueToAdd) {
-        Optional<Bucket<T>> possiblyNewFirstBucket = this.firstBucket.insert(valueToAdd);
+        InsertReturnInformation<T> insertReturnInformation = this.firstBucket.insert(valueToAdd);
+        Optional<Bucket<T>> possiblyNewFirstBucket = insertReturnInformation.getPossiblyNewFirstBucket();
         if (possiblyNewFirstBucket.isPresent()) {
             this.firstBucket = possiblyNewFirstBucket.get();
         }
