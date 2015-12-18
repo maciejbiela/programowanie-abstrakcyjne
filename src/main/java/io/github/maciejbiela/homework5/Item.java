@@ -4,9 +4,6 @@ public class Item<T extends Comparable> implements Comparable<Item<T>> {
     private T value;
     private int count;
 
-    public Item() {
-    }
-
     public Item(T value) {
         this.value = value;
         this.count = 1;
