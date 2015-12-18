@@ -4,72 +4,63 @@ import java.util.Optional;
 
 public class InsertReturnInformation<T extends Comparable> {
     private Optional<Bucket<T>> possiblyNewFirstBucket;
-    private int newTotalSize;
-    private int newUniqueSize;
-    private int newNumberOfBuckets;
-    private int newCapacity;
+    private boolean incrementTotalSize;
+    private boolean incrementUniqueSize;
+    private boolean incrementNumberOfBuckets;
 
-    private InsertReturnInformation(Optional<Bucket<T>> possiblyNewFirstBucket, int newTotalSize, int newUniqueSize, int newNumberOfBuckets, int newCapacity) {
+    private InsertReturnInformation(Optional<Bucket<T>> possiblyNewFirstBucket,
+                                    boolean incrementTotalSize,
+                                    boolean incrementUniqueSize,
+                                    boolean incrementNumberOfBuckets) {
         this.possiblyNewFirstBucket = possiblyNewFirstBucket;
-        this.newTotalSize = newTotalSize;
-        this.newUniqueSize = newUniqueSize;
-        this.newNumberOfBuckets = newNumberOfBuckets;
-        this.newCapacity = newCapacity;
+        this.incrementTotalSize = incrementTotalSize;
+        this.incrementUniqueSize = incrementUniqueSize;
+        this.incrementNumberOfBuckets = incrementNumberOfBuckets;
     }
 
     public Optional<Bucket<T>> getPossiblyNewFirstBucket() {
         return possiblyNewFirstBucket;
     }
 
-    public int getNewTotalSize() {
-        return newTotalSize;
+    public boolean getIncrementTotalSize() {
+        return incrementTotalSize;
     }
 
-    public int getNewUniqueSize() {
-        return newUniqueSize;
+    public boolean getIncrementUniqueSize() {
+        return incrementUniqueSize;
     }
 
-    public int getNewNumberOfBuckets() {
-        return newNumberOfBuckets;
-    }
-
-    public int getNewCapacity() {
-        return newCapacity;
+    public boolean getIncrementNumberOfBuckets() {
+        return incrementNumberOfBuckets;
     }
 
     public static class Builder<T extends Comparable> {
         private Optional<Bucket<T>> possiblyNewFirstBucket;
-        private int newTotalSize;
-        private int newUniqueSize;
-        private int newNumberOfBuckets;
-        private int newCapacity;
+        private boolean incrementTotalSizeBy;
+        private boolean incrementUniqueSizeBy;
+        private boolean incrementNumberOfBucketsBy;
 
         public void withPossiblyNewFirstBucket(Optional<Bucket<T>> possiblyNewFirstBucket) {
             this.possiblyNewFirstBucket = possiblyNewFirstBucket;
         }
 
-        public void withNewTotalSize(int newTotalSize) {
-            this.newTotalSize = newTotalSize;
+        public void withIncrementTotalSizeBy(boolean incrementTotalSizeBy) {
+            this.incrementTotalSizeBy = incrementTotalSizeBy;
         }
 
-        public void withNewUniqueSize(int newUniqueSize) {
-            this.newUniqueSize = newUniqueSize;
+        public void withIncrementUniqueSizeBy(boolean incrementUniqueSizeBy) {
+            this.incrementUniqueSizeBy = incrementUniqueSizeBy;
         }
 
-        public void withNewNumberOfBuckets(int newNumberOfBuckets) {
-            this.newNumberOfBuckets = newNumberOfBuckets;
-        }
-
-        public void withNewCapacity(int newCapacity) {
-            this.newCapacity = newCapacity;
+        public void withIncrementNumberOfBucketsBy(boolean incrementNumberOfBucketsBy) {
+            this.incrementNumberOfBucketsBy = incrementNumberOfBucketsBy;
         }
 
         public InsertReturnInformation<T> build() {
             return new InsertReturnInformation<>(this.possiblyNewFirstBucket,
-                    this.newTotalSize,
-                    this.newUniqueSize,
-                    this.newNumberOfBuckets,
-                    this.newCapacity);
+                    this.incrementTotalSizeBy,
+                    this.incrementUniqueSizeBy,
+                    this.incrementNumberOfBucketsBy);
         }
     }
 }
