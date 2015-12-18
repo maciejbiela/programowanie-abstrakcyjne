@@ -4,7 +4,6 @@ import java.util.Optional;
 
 public class SortedDeque<T extends Comparable> {
     private final int bucketSize;
-    private int capacity;
     private int numberOfBuckets;
     private int totalSize;
     private int uniqueSize;
@@ -18,6 +17,7 @@ public class SortedDeque<T extends Comparable> {
     public SortedDeque(int bucketSize) {
         this.bucketSize = bucketSize;
         this.firstBucket = new Bucket<>(bucketSize);
+        this.numberOfBuckets = 1;
     }
 
     public boolean isEmpty() {
@@ -36,13 +36,11 @@ public class SortedDeque<T extends Comparable> {
         if (this.firstBucket == null) {
             return 0;
         }
-        this.numberOfBuckets = this.firstBucket.getNumberOfBuckets();
         return this.numberOfBuckets * this.bucketSize;
     }
 
     public void reserve(int capacity) {
         this.numberOfBuckets = (int) Math.ceil(((double) capacity) / this.bucketSize);
-        this.capacity = this.numberOfBuckets * this.bucketSize;
         this.firstBucket.createAdditionalBuckets(this.numberOfBuckets - 1);
     }
 
