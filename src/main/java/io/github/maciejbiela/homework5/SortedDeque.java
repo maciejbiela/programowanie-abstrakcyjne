@@ -66,19 +66,19 @@ public class SortedDeque<T extends Comparable> {
     }
 
     private void updateNumberOfBuckets(InsertReturnInformation<T> insertReturnInformation) {
-        if (insertReturnInformation.getIncrementNumberOfBuckets()) {
+        if (insertReturnInformation.shouldIncrementNumberOfBuckets()) {
             this.numberOfBuckets++;
         }
     }
 
     private void updateUniqueSize(InsertReturnInformation<T> insertReturnInformation) {
-        if (insertReturnInformation.getIncrementUniqueSize()) {
+        if (insertReturnInformation.shouldIncrementUniqueSize()) {
             this.uniqueSize++;
         }
     }
 
     private void updateTotalSize(InsertReturnInformation<T> insertReturnInformation) {
-        if (insertReturnInformation.getIncrementTotalSize()) {
+        if (insertReturnInformation.shouldIncrementTotalSize()) {
             this.totalSize++;
         }
     }

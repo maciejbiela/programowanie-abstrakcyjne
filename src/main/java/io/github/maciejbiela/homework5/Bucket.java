@@ -52,8 +52,8 @@ public class Bucket<T extends Comparable> {
         this.totalSize += item.getCount();
         this.smallest = this.items.get(0).getValue();
         this.largest = this.items.get(this.uniqueSize - 1).getValue();
-        builder.withIncrementTotalSizeBy(true);
-        builder.withIncrementUniqueSizeBy(true);
+        builder.withIncrementTotalSize(true);
+        builder.withIncrementUniqueSize(true);
     }
 
     private void insertInCurrentBucket(T valueToAdd, InsertReturnInformation.Builder builder) {
@@ -63,7 +63,7 @@ public class Bucket<T extends Comparable> {
                 .findFirst();
         if (maybeItem.isPresent()) {
             maybeItem.get().incrementCount();
-            builder.withIncrementTotalSizeBy(true);
+            builder.withIncrementTotalSize(true);
         } else {
             if (isCurrentBucketFull()) {
                 splitCurrentBucket(valueToAdd, builder);
@@ -74,8 +74,8 @@ public class Bucket<T extends Comparable> {
                 this.items.sort(Item::compareTo);
                 this.smallest = this.items.get(0).getValue();
                 this.largest = this.items.get(this.uniqueSize - 1).getValue();
-                builder.withIncrementTotalSizeBy(true);
-                builder.withIncrementUniqueSizeBy(true);
+                builder.withIncrementTotalSize(true);
+                builder.withIncrementUniqueSize(true);
             }
         }
     }
@@ -87,7 +87,7 @@ public class Bucket<T extends Comparable> {
         newBucket.previousBucket = this;
         newBucket.nextBucket = tmp;
         tmp.previousBucket = newBucket;
-        builder.withIncrementNumberOfBucketsBy(true);
+        builder.withIncrementNumberOfBuckets(true);
         newBucket.insertInCurrentBucket(valueToBeAdded, builder);
     }
 
@@ -118,7 +118,7 @@ public class Bucket<T extends Comparable> {
         newBucketBetween.nextBucket = tmp;
         tmp.previousBucket = newBucketBetween;
 
-        builder.withIncrementNumberOfBucketsBy(true);
+        builder.withIncrementNumberOfBuckets(true);
 
         newBucketBetween.insertInCurrentBucket(valueToAdd, builder);
         for (int i = indexOfFirstLargerItem; i < this.uniqueSize; i++) {
@@ -131,7 +131,7 @@ public class Bucket<T extends Comparable> {
 
     private void appendNewBucketToTheRightWithValue(T valueToAdd, InsertReturnInformation.Builder builder) {
         Bucket<T> newBucket = new Bucket<>(this.bucketSize);
-        builder.withIncrementNumberOfBucketsBy(true);
+        builder.withIncrementNumberOfBuckets(true);
         newBucket.previousBucket = this;
         this.nextBucket = newBucket;
         newBucket.insert(valueToAdd, builder);
@@ -145,7 +145,7 @@ public class Bucket<T extends Comparable> {
 
     private Bucket<T> appendNewBucketToTheLeftWithValue(T valueToAdd, InsertReturnInformation.Builder builder) {
         Bucket<T> newBucket = new Bucket<>(this.bucketSize);
-        builder.withIncrementNumberOfBucketsBy(true);
+        builder.withIncrementNumberOfBuckets(true);
         newBucket.nextBucket = this;
         this.previousBucket = newBucket;
         newBucket.insertInCurrentBucket(valueToAdd, builder);

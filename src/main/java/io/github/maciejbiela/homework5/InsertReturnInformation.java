@@ -22,45 +22,45 @@ public class InsertReturnInformation<T extends Comparable> {
         return possiblyNewFirstBucket;
     }
 
-    public boolean getIncrementTotalSize() {
+    public boolean shouldIncrementTotalSize() {
         return incrementTotalSize;
     }
 
-    public boolean getIncrementUniqueSize() {
+    public boolean shouldIncrementUniqueSize() {
         return incrementUniqueSize;
     }
 
-    public boolean getIncrementNumberOfBuckets() {
+    public boolean shouldIncrementNumberOfBuckets() {
         return incrementNumberOfBuckets;
     }
 
     public static class Builder<T extends Comparable> {
         private Optional<Bucket<T>> possiblyNewFirstBucket;
-        private boolean incrementTotalSizeBy;
-        private boolean incrementUniqueSizeBy;
-        private boolean incrementNumberOfBucketsBy;
+        private boolean incrementTotalSize;
+        private boolean incrementUniqueSize;
+        private boolean incrementNumberOfBuckets;
 
         public void withPossiblyNewFirstBucket(Optional<Bucket<T>> possiblyNewFirstBucket) {
             this.possiblyNewFirstBucket = possiblyNewFirstBucket;
         }
 
-        public void withIncrementTotalSizeBy(boolean incrementTotalSizeBy) {
-            this.incrementTotalSizeBy = incrementTotalSizeBy;
+        public void withIncrementTotalSize(boolean incrementTotalSize) {
+            this.incrementTotalSize = incrementTotalSize;
         }
 
-        public void withIncrementUniqueSizeBy(boolean incrementUniqueSizeBy) {
-            this.incrementUniqueSizeBy = incrementUniqueSizeBy;
+        public void withIncrementUniqueSize(boolean incrementUniqueSize) {
+            this.incrementUniqueSize = incrementUniqueSize;
         }
 
-        public void withIncrementNumberOfBucketsBy(boolean incrementNumberOfBucketsBy) {
-            this.incrementNumberOfBucketsBy = incrementNumberOfBucketsBy;
+        public void withIncrementNumberOfBuckets(boolean incrementNumberOfBuckets) {
+            this.incrementNumberOfBuckets = incrementNumberOfBuckets;
         }
 
         public InsertReturnInformation<T> build() {
             return new InsertReturnInformation<>(this.possiblyNewFirstBucket,
-                    this.incrementTotalSizeBy,
-                    this.incrementUniqueSizeBy,
-                    this.incrementNumberOfBucketsBy);
+                    this.incrementTotalSize,
+                    this.incrementUniqueSize,
+                    this.incrementNumberOfBuckets);
         }
     }
 }
