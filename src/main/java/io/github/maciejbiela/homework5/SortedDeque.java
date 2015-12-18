@@ -46,7 +46,7 @@ public class SortedDeque<T extends Comparable> {
     }
 
     public void insert(T valueToAdd) {
-        InsertReturnInformation<T> insertReturnInformation = this.firstBucket.insert(valueToAdd);
+        InsertReturnInformation<T> insertReturnInformation = this.firstBucket.insertReturningInformationViaBuilder(valueToAdd);
         updateStatisticsGiven(insertReturnInformation);
     }
 

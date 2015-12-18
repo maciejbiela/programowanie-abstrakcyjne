@@ -35,7 +35,7 @@ public class InsertReturnInformation<T extends Comparable> {
     }
 
     public static class Builder<T extends Comparable> {
-        private Optional<Bucket<T>> possiblyNewFirstBucket;
+        private Optional<Bucket<T>> possiblyNewFirstBucket = Optional.empty();
         private boolean incrementTotalSize;
         private boolean incrementUniqueSize;
         private boolean incrementNumberOfBuckets;
