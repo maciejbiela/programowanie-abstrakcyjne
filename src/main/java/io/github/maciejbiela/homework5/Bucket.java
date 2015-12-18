@@ -64,9 +64,9 @@ public class Bucket<T extends Comparable> {
                 this.items.sort(Item::compareTo);
                 this.smallest = this.items.get(0).getValue();
                 this.largest = this.items.get(this.uniqueSize - 1).getValue();
+                this.totalSize++;
             }
         }
-        this.totalSize++;
     }
 
     private void createNewBucketBetween(T valueToBeAdded) {
@@ -101,7 +101,6 @@ public class Bucket<T extends Comparable> {
         Bucket<T> tmp = this.nextBucket;
         Bucket<T> newBucketBetween = new Bucket<>(this.bucketSize);
 
-//        Bucket<T> newBucketToTheRight = new Bucket<>(this.bucketSize);
         this.nextBucket = newBucketBetween;
         newBucketBetween.previousBucket = this;
         newBucketBetween.nextBucket = tmp;
